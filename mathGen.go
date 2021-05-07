@@ -12,7 +12,7 @@ type problemSet struct {
 }
 
 func main() {
-	fmt.Println("Welcome to the Math Generator")
+	fmt.Println("Welcome to the Math Generator\n")
 
 	//generate random addition problems between 2 numbers
 	problems := make([]problemSet, 100)
@@ -25,9 +25,22 @@ func main() {
 	//problemUsed := make([]bool, 100)
 	rand.Seed(time.Now().UnixNano())
 
-	for i := 0; i < 10; i++ {
+	// for i := 0; i < 10; i++ {
+	// 	problemNum := rand.Intn(100)
+	// 	fmt.Println(problems[problemNum])
+	// }
+
+	for i := 0; i < 5; i++ {
 		problemNum := rand.Intn(100)
-		fmt.Println(problems[problemNum])
+		fmt.Printf(" %v + %v = ", problems[problemNum].first, problems[problemNum].second)
+		correctAnswer := problems[problemNum].first + problems[problemNum].second
+		var answer int
+		fmt.Scan(&answer)
+		if answer == correctAnswer {
+			fmt.Print("CORRECT\n\n")
+		} else {
+			fmt.Print("Answer is: ", correctAnswer, "\n\n")
+		}
 	}
 
 	//fmt.Println(problems)
