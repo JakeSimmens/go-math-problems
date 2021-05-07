@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 type problemSet struct {
 	first  int
@@ -18,7 +22,15 @@ func main() {
 		}
 	}
 
-	fmt.Println(problems)
+	//problemUsed := make([]bool, 100)
+	rand.Seed(time.Now().UnixNano())
+
+	for i := 0; i < 10; i++ {
+		problemNum := rand.Intn(100)
+		fmt.Println(problems[problemNum])
+	}
+
+	//fmt.Println(problems)
 	//display problem
 	//get user input
 	//check answer
