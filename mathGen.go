@@ -12,14 +12,18 @@ type problemSet struct {
 }
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	fmt.Print("Welcome to the Math Generator\n\n")
 
-	showUserMenu()
-	getUserMenuSelection()
+	quit := false
+	for !quit {
+		showUserMenu()
+		quit = executeUserSelection()
+	}
 
 	//problemUsed := make([]bool, 100)
-	rand.Seed(time.Now().UnixNano())
-	additionProblems(3)
+
+	//additionProblems(3)
 
 	//fmt.Println(problems)
 	//display problem
@@ -34,29 +38,31 @@ func main() {
 func showUserMenu() {
 
 	fmt.Println("MENU")
-	fmt.Println("Enter a number")
 	fmt.Println("1. Addition +")
 	fmt.Println("2. Subtraction -")
-	fmt.Print("Q. to Quit\n\n")
-	fmt.Print("Your Choice:  ")
-
+	fmt.Print("Q. Quit\n\n")
 }
 
-func getUserMenuSelection() {
+func executeUserSelection() bool {
 	var menuSelection string
+	fmt.Print("Your Choice:  ")
 	fmt.Scan(&menuSelection)
+	if menuSelection == "q" || menuSelection == "Q" {
+		return true
+	}
 
 	switch menuSelection {
-	case "Q":
-		return
 	case "1":
 		fmt.Println("Addition Time")
+		additionProblems(5)
 	case "2":
 		fmt.Println("Subtraction Time")
 	default:
-		fmt.Print("Please make a selection:  ")
-		fmt.Scan(&menuSelection)
+		fmt.Print("Invalid option.\n\n")
+		showUserMenu()
+		return executeUserSelection()
 	}
+	return false
 }
 
 func additionProblems(count int) {
