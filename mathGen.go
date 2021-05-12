@@ -12,13 +12,21 @@ type problemSet struct {
 }
 
 func main() {
+
+	problems := make([]problemSet, 100)
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			problems[i*10+j] = problemSet{i, j}
+		}
+	}
+
 	rand.Seed(time.Now().UnixNano())
 	fmt.Print("Welcome to the Math Generator\n\n")
 
 	quit := false
 	for !quit {
 		showUserMenu()
-		quit = executeUserSelection()
+		quit = executeUserSelection(&problems)
 	}
 
 	//problemUsed := make([]bool, 100)
@@ -43,7 +51,7 @@ func showUserMenu() {
 	fmt.Print("Q. Quit\n\n")
 }
 
-func executeUserSelection() bool {
+func executeUserSelection(numSets *[]problemSet) bool {
 	var menuSelection string
 	fmt.Print("Your Choice:  ")
 	fmt.Scan(&menuSelection)
@@ -54,30 +62,30 @@ func executeUserSelection() bool {
 	switch menuSelection {
 	case "1":
 		fmt.Println("Addition Time")
-		additionProblems(5)
+		additionProblems(3, *numSets)
 	case "2":
 		fmt.Println("Subtraction Time")
 	default:
 		fmt.Print("Invalid option.\n\n")
 		showUserMenu()
-		return executeUserSelection()
+		return executeUserSelection(numSets)
 	}
 	return false
 }
 
-func additionProblems(count int) {
+func additionProblems(count int, numSets []problemSet) {
 	//generate random addition problems between 2 numbers
-	problems := make([]problemSet, 100)
-	for i := 0; i < 10; i++ {
-		for j := 0; j < 10; j++ {
-			problems[i*10+j] = problemSet{i, j}
-		}
-	}
+	// problems := make([]problemSet, 100)
+	// for i := 0; i < 10; i++ {
+	// 	for j := 0; j < 10; j++ {
+	// 		problems[i*10+j] = problemSet{i, j}
+	// 	}
+	// }
 
 	for i := 0; i < count; i++ {
 		problemNum := rand.Intn(100)
-		fmt.Printf(" %v + %v = ", problems[problemNum].first, problems[problemNum].second)
-		correctAnswer := problems[problemNum].first + problems[problemNum].second
+		fmt.Printf(" %v + %v = ", numSets[problemNum].first, numSets[problemNum].second)
+		correctAnswer := numSets[problemNum].first + numSets[problemNum].second
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
