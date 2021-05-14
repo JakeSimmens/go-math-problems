@@ -66,7 +66,7 @@ func executeUserSelection(numSets *[]problemSet) bool {
 func additionProblems(count int, numSets []problemSet) {
 
 	for i := 0; i < count; i++ {
-		problemNum := rand.Intn(100)
+		problemNum := rand.Intn(len(numSets))
 		fmt.Printf(" %v + %v = ", numSets[problemNum].first, numSets[problemNum].second)
 		correctAnswer := numSets[problemNum].first + numSets[problemNum].second
 		var answer int
@@ -85,7 +85,7 @@ func subtractionProblems(count int, numSets []problemSet) {
 		var firstNum int
 		var secondNum int
 
-		problemNum := rand.Intn(100)
+		problemNum := rand.Intn(len(numSets))
 		if numSets[problemNum].second > numSets[problemNum].first {
 			firstNum = numSets[problemNum].second
 			secondNum = numSets[problemNum].first
