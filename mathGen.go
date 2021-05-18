@@ -26,44 +26,53 @@ func main() {
 	quit := false
 	for !quit {
 		showUserMenu()
-		quit = executeUserSelection(&problems)
+		cmd := getMenuInput()
+		quit = executeMenuSelection(cmd, &problems)
 	}
-
-	//track problems that are used and don't repeat
 }
 
 func showUserMenu() {
+	colorGreen := "\033[32m"
+	colorReset := "\033[0m"
 
-	fmt.Println("MENU")
+	fmt.Println(colorGreen, "MENU")
 	fmt.Println("1. Addition +")
 	fmt.Println("2. Subtraction -")
-	fmt.Print("Q. Quit\n\n")
+	fmt.Print("Q. Quit\n\n", colorReset)
 }
 
-func executeUserSelection(numSets *[]problemSet) bool {
+func getMenuInput() string {
 	var menuSelection string
 	fmt.Print("Your Choice:  ")
 	fmt.Scan(&menuSelection)
-	if menuSelection == "q" || menuSelection == "Q" {
+	return menuSelection
+}
+
+func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
+	if cmd == "q" || cmd == "Q" {
 		return true
 	}
 
-	switch menuSelection {
+	switch cmd {
 	case "1":
 		fmt.Println("Addition Time")
-		additionProblems(3, *numSets)
+		runAddition(3, *numSets)
 	case "2":
 		fmt.Println("Subtraction Time")
-		subtractionProblems(3, *numSets)
+		runSubtraction(3, *numSets)
 	default:
-		fmt.Print("Invalid option.\n\n")
-		showUserMenu()
-		return executeUserSelection(numSets)
+		fmt.Print("\033[33m", "** Invalid option **\n\n", "\033[0m")
+		//showUserMenu()
+		//nextCmd := getMenuInput()
+		//return executeMenuSelection(nextCmd, numSets)
 	}
 	return false
 }
 
-func additionProblems(count int, numSets []problemSet) {
+func runAddition(count int, numSets []problemSet) {
+	colorRed := "\033[31m"
+	colorWhite := "\033[37m"
+	colorReset := "\033[0m"
 
 	for i := 0; i < count; i++ {
 		problemNum := rand.Intn(100)
@@ -72,14 +81,17 @@ func additionProblems(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			fmt.Print("CORRECT\n\n")
+			fmt.Print(colorWhite, "CORRECT\n\n", colorReset)
 		} else {
-			fmt.Print("Answer is: ", correctAnswer, "\n\n")
+			fmt.Print(colorRed, "Answer is: ", correctAnswer, "\n\n", colorReset)
 		}
 	}
 }
 
-func subtractionProblems(count int, numSets []problemSet) {
+func runSubtraction(count int, numSets []problemSet) {
+	colorRed := "\033[31m"
+	colorWhite := "\033[37m"
+	colorReset := "\033[0m"
 
 	for i := 0; i < count; i++ {
 		var firstNum int
@@ -99,9 +111,9 @@ func subtractionProblems(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			fmt.Print("CORRECT\n\n")
+			fmt.Print(colorWhite, "CORRECT\n\n", colorReset)
 		} else {
-			fmt.Print("Answer is: ", correctAnswer, "\n\n")
+			fmt.Print(colorRed, "Answer is: ", correctAnswer, "\n\n", colorReset)
 		}
 	}
 }
