@@ -11,6 +11,28 @@ type problemSet struct {
 	second int
 }
 
+type colors struct {
+	standard string
+	green    string
+	white    string
+	red      string
+}
+
+func (c *colors) setColors() {
+	if c.standard == "" {
+		c.standard = "\033[0m"
+	}
+	if c.green == "" {
+		c.green = "\033[32m"
+	}
+	if c.white == "" {
+		c.white = "\033[37m"
+	}
+	if c.red == "" {
+		c.red = "\033[31m"
+	}
+}
+
 func main() {
 
 	problems := make([]problemSet, 100)
@@ -32,10 +54,12 @@ func main() {
 }
 
 func showUserMenu() {
-	colorGreen := "\033[32m"
+	color := colors{}
+	color.setColors()
+	//colorGreen := "\033[32m"
 	colorReset := "\033[0m"
 
-	fmt.Println(colorGreen, "MENU")
+	fmt.Println(color.green, "MENU")
 	fmt.Println("1. Addition +")
 	fmt.Println("2. Subtraction -")
 	fmt.Print("Q. Quit\n\n", colorReset)
@@ -70,9 +94,9 @@ func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
 }
 
 func runAddition(count int, numSets []problemSet) {
-	colorRed := "\033[31m"
-	colorWhite := "\033[37m"
-	colorReset := "\033[0m"
+	changeToRed := "\033[31m"
+	changeToWhite := "\033[37m"
+	resetColor := "\033[0m"
 
 	for i := 0; i < count; i++ {
 		problemNum := rand.Intn(100)
@@ -81,9 +105,9 @@ func runAddition(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			fmt.Print(colorWhite, "CORRECT\n\n", colorReset)
+			fmt.Print(changeToWhite, "CORRECT\n\n", resetColor)
 		} else {
-			fmt.Print(colorRed, "Answer is: ", correctAnswer, "\n\n", colorReset)
+			fmt.Print(changeToRed, "Answer is: ", correctAnswer, "\n\n", resetColor)
 		}
 	}
 }
