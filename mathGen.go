@@ -16,6 +16,7 @@ type colors struct {
 	green    string
 	white    string
 	red      string
+	yellow   string
 }
 
 func (c *colors) setColors() {
@@ -30,6 +31,9 @@ func (c *colors) setColors() {
 	}
 	if c.red == "" {
 		c.red = "\033[31m"
+	}
+	if c.yellow == "" {
+		c.yellow = "\033[33m"
 	}
 }
 
@@ -56,13 +60,11 @@ func main() {
 func showUserMenu() {
 	color := colors{}
 	color.setColors()
-	//colorGreen := "\033[32m"
-	colorReset := "\033[0m"
 
-	fmt.Println(color.green, "MENU")
+	fmt.Println(color.green, "  MENU\n", color.standard)
 	fmt.Println("1. Addition +")
 	fmt.Println("2. Subtraction -")
-	fmt.Print("Q. Quit\n\n", colorReset)
+	fmt.Print("Q. Quit\n\n")
 }
 
 func getMenuInput() string {
@@ -76,6 +78,8 @@ func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
 	if cmd == "q" || cmd == "Q" {
 		return true
 	}
+	color := colors{}
+	color.setColors()
 
 	switch cmd {
 	case "1":
@@ -85,18 +89,14 @@ func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
 		fmt.Println("Subtraction Time")
 		runSubtraction(3, *numSets)
 	default:
-		fmt.Print("\033[33m", "** Invalid option **\n\n", "\033[0m")
-		//showUserMenu()
-		//nextCmd := getMenuInput()
-		//return executeMenuSelection(nextCmd, numSets)
+		fmt.Print(color.yellow, "** Invalid option **\n\n", color.standard)
 	}
 	return false
 }
 
 func runAddition(count int, numSets []problemSet) {
-	changeToRed := "\033[31m"
-	changeToWhite := "\033[37m"
-	resetColor := "\033[0m"
+	color := colors{}
+	color.setColors()
 
 	for i := 0; i < count; i++ {
 		problemNum := rand.Intn(100)
@@ -105,17 +105,16 @@ func runAddition(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			fmt.Print(changeToWhite, "CORRECT\n\n", resetColor)
+			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
-			fmt.Print(changeToRed, "Answer is: ", correctAnswer, "\n\n", resetColor)
+			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
 }
 
 func runSubtraction(count int, numSets []problemSet) {
-	colorRed := "\033[31m"
-	colorWhite := "\033[37m"
-	colorReset := "\033[0m"
+	color := colors{}
+	color.setColors()
 
 	for i := 0; i < count; i++ {
 		var firstNum int
@@ -135,9 +134,9 @@ func runSubtraction(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			fmt.Print(colorWhite, "CORRECT\n\n", colorReset)
+			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
-			fmt.Print(colorRed, "Answer is: ", correctAnswer, "\n\n", colorReset)
+			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
 }
