@@ -1,8 +1,16 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestShowUserMenu(t *testing.T) {
-	t.Log("Testing my test")
-	showUserMenu()
+func TestExecuteMenuSelection(t *testing.T) {
+	//t.Log("GetMenuInput")
+	problems := make([]problemSet, 1)
+	problems[0] = problemSet{0, 0}
+
+	got := executeMenuSelection("q", &problems)
+	if !got {
+		t.Errorf("getMenuInput() = %v; want true to quit app", got)
+	}
 }
