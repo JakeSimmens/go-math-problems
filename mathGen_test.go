@@ -9,8 +9,13 @@ func TestExecuteMenuSelection(t *testing.T) {
 	problems := make([]problemSet, 1)
 	problems[0] = problemSet{0, 0}
 
-	got := executeMenuSelection("q", &problems)
-	if !got {
-		t.Errorf("getMenuInput() = %v; want true to quit app", got)
+	gotQuit := executeMenuSelection("q", &problems)
+	if !gotQuit {
+		t.Errorf("executeMenueSelection() = %v; want true to quit app", gotQuit)
+	}
+
+	gotQuit = executeMenuSelection("1", &problems)
+	if gotQuit {
+		t.Errorf("executeMenueSelection() = %v; want false to continue app running", gotQuit)
 	}
 }
