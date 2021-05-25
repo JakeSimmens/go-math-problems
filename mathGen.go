@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 )
@@ -37,7 +38,16 @@ func (c *colors) setColors() {
 	}
 }
 
+type scoreKeeper struct {
+	wins   int
+	losses int
+}
+
 func main() {
+
+	score := scoreKeeper{}
+	score.wins = 0
+	score.losses = 0
 
 	problems := make([]problemSet, 100)
 	for i := 0; i < 10; i++ {
@@ -53,7 +63,9 @@ func main() {
 	for !quit {
 		showUserMenu()
 		cmd := getMenuInput()
-		quit = executeMenuSelection(cmd, &problems)
+		quit = executeMenuSelection(cmd, &problems, &score)
+		totalProblems := score.wins + score.losses
+		fmt.Printf("Your Total Score: %v / %v  %f%%\n\n", score.wins, totalProblems, math.Floor((float64(score.wins)/float64(totalProblems))*100))
 	}
 }
 
@@ -74,7 +86,7 @@ func getMenuInput() string {
 	return menuSelection
 }
 
-func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
+func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreKeeper) bool {
 	if cmd == "q" || cmd == "Q" {
 		return true
 	}
@@ -84,7 +96,7 @@ func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
 	switch cmd {
 	case "1":
 		fmt.Println("Addition Time")
-		runAddition(3, *numSets)
+		runAddition(3, *numSets, score)
 	case "2":
 		fmt.Println("Subtraction Time")
 		runSubtraction(3, *numSets)
@@ -94,7 +106,7 @@ func executeMenuSelection(cmd string, numSets *[]problemSet) bool {
 	return false
 }
 
-func runAddition(count int, numSets []problemSet) {
+func runAddition(count int, numSets []problemSet, score *scoreKeeper) {
 	color := colors{}
 	color.setColors()
 
@@ -105,8 +117,10 @@ func runAddition(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
+			score.wins++
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
+			score.losses++
 			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
