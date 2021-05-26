@@ -38,14 +38,20 @@ func (c *colors) setColors() {
 	}
 }
 
-type scoreKeeper struct {
+type scoreBoard struct {
 	wins   int
 	losses int
 }
 
+func (score *scoreBoard) addWin() {
+	score.wins++
+	fmt.Println("wins: ", score.wins)
+	fmt.Println("losses: ", score.losses)
+}
+
 func main() {
 
-	score := scoreKeeper{}
+	score := scoreBoard{}
 	score.wins = 0
 	score.losses = 0
 
@@ -86,7 +92,7 @@ func getMenuInput() string {
 	return menuSelection
 }
 
-func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreKeeper) bool {
+func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreBoard) bool {
 	if cmd == "q" || cmd == "Q" {
 		return true
 	}
@@ -106,7 +112,7 @@ func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreKeeper)
 	return false
 }
 
-func runAddition(count int, numSets []problemSet, score *scoreKeeper) {
+func runAddition(count int, numSets []problemSet, score *scoreBoard) {
 	color := colors{}
 	color.setColors()
 
@@ -117,7 +123,7 @@ func runAddition(count int, numSets []problemSet, score *scoreKeeper) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			score.wins++
+			score.addWin()
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
 			score.losses++
