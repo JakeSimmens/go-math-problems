@@ -49,6 +49,18 @@ func (score *scoreBoard) addWin() {
 	fmt.Println("losses: ", score.losses)
 }
 
+func (score *scoreBoard) addLoss() {
+	score.losses++
+	fmt.Println("wins: ", score.wins)
+	fmt.Println("losses: ", score.losses)
+}
+
+func (score *scoreBoard) showScore() {
+	totalProblems := score.wins + score.losses
+	fmt.Printf("Your Total Score: %v / %v  %f%%\n\n", score.wins, totalProblems, math.Floor((float64(score.wins)/float64(totalProblems))*100))
+
+}
+
 func main() {
 
 	score := scoreBoard{}
@@ -70,8 +82,8 @@ func main() {
 		showUserMenu()
 		cmd := getMenuInput()
 		quit = executeMenuSelection(cmd, &problems, &score)
-		totalProblems := score.wins + score.losses
-		fmt.Printf("Your Total Score: %v / %v  %f%%\n\n", score.wins, totalProblems, math.Floor((float64(score.wins)/float64(totalProblems))*100))
+		score.showScore()
+
 	}
 }
 
@@ -105,7 +117,7 @@ func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreBoard) 
 		runAddition(3, *numSets, score)
 	case "2":
 		fmt.Println("Subtraction Time")
-		runSubtraction(3, *numSets)
+		runSubtraction(3, *numSets, score)
 	default:
 		fmt.Print(color.yellow, "** Invalid option **\n\n", color.standard)
 	}
@@ -126,13 +138,13 @@ func runAddition(count int, numSets []problemSet, score *scoreBoard) {
 			score.addWin()
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
-			score.losses++
+			score.addLoss()
 			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
 }
 
-func runSubtraction(count int, numSets []problemSet) {
+func runSubtraction(count int, numSets []problemSet, score *scoreBoard) {
 	color := colors{}
 	color.setColors()
 
@@ -154,8 +166,10 @@ func runSubtraction(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
+			score.addWin()
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
+			score.addLoss()
 			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
