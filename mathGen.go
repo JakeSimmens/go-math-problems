@@ -54,14 +54,16 @@ func (score *scoreBoard) init() {
 
 func (score *scoreBoard) addWin() {
 	score.wins++
-	fmt.Println("wins: ", score.wins)
-	fmt.Println("losses: ", score.losses)
+	score.roundWins++
 }
 
 func (score *scoreBoard) addLoss() {
 	score.losses++
-	fmt.Println("wins: ", score.wins)
-	fmt.Println("losses: ", score.losses)
+	score.roundLosses++
+}
+func (score *scoreBoard) resetRound() {
+	score.roundWins = 0
+	score.roundLosses = 0
 }
 
 func (score *scoreBoard) showScore() {
@@ -69,6 +71,16 @@ func (score *scoreBoard) showScore() {
 	fmt.Println("Total Wins:  ", score.wins)
 	fmt.Println("Total Losses:  ", score.losses)
 	fmt.Println("Winning %:  ", math.Floor((float64(score.wins)/float64(totalProblems))*100))
+	fmt.Print("\n----------\n\n")
+	time.Sleep(1 * time.Second)
+}
+func (score *scoreBoard) showRoundScore() {
+	totalProblems := score.roundWins + score.roundLosses
+	fmt.Println("Round Wins:  ", score.roundWins)
+	fmt.Println("Round Losses:  ", score.roundLosses)
+	fmt.Println("Winning %:  ", math.Floor((float64(score.roundWins)/float64(totalProblems))*100))
+	fmt.Print("\n----------\n\n")
+	time.Sleep(1 * time.Second)
 }
 
 func main() {
@@ -124,9 +136,13 @@ func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreBoard) 
 	case "1":
 		fmt.Println("Addition Time")
 		runAddition(3, *numSets, score)
+		score.showRoundScore()
+		score.resetRound()
 	case "2":
 		fmt.Println("Subtraction Time")
 		runSubtraction(3, *numSets, score)
+		score.showRoundScore()
+		score.resetRound()
 	default:
 		fmt.Print(color.yellow, "** Invalid option **\n\n", color.standard)
 	}
