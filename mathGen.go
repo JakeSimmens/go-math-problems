@@ -38,16 +38,55 @@ func (c *colors) setColors() {
 	}
 }
 
-type scoreKeeper struct {
-	wins   int
-	losses int
+type scoreBoard struct {
+	wins        int
+	losses      int
+	roundWins   int
+	roundLosses int
+}
+
+func (score *scoreBoard) init() {
+	score.wins = 0
+	score.losses = 0
+	score.roundWins = 0
+	score.roundLosses = 0
+}
+
+func (score *scoreBoard) addWin() {
+	score.wins++
+	score.roundWins++
+}
+
+func (score *scoreBoard) addLoss() {
+	score.losses++
+	score.roundLosses++
+}
+func (score *scoreBoard) resetRound() {
+	score.roundWins = 0
+	score.roundLosses = 0
+}
+
+func (score *scoreBoard) showScore() {
+	totalProblems := score.wins + score.losses
+	fmt.Println("Total Wins:  ", score.wins)
+	fmt.Println("Total Losses:  ", score.losses)
+	fmt.Println("Winning %:  ", math.Floor((float64(score.wins)/float64(totalProblems))*100))
+	fmt.Print("\n----------\n\n")
+	time.Sleep(1 * time.Second)
+}
+func (score *scoreBoard) showRoundScore() {
+	totalProblems := score.roundWins + score.roundLosses
+	fmt.Println("Round Wins:  ", score.roundWins)
+	fmt.Println("Round Losses:  ", score.roundLosses)
+	fmt.Println("Winning %:  ", math.Floor((float64(score.roundWins)/float64(totalProblems))*100))
+	fmt.Print("\n----------\n\n")
+	time.Sleep(1 * time.Second)
 }
 
 func main() {
 
-	score := scoreKeeper{}
-	score.wins = 0
-	score.losses = 0
+	score := scoreBoard{}
+	score.init()
 
 	problems := make([]problemSet, 100)
 	for i := 0; i < 10; i++ {
@@ -64,8 +103,8 @@ func main() {
 		showUserMenu()
 		cmd := getMenuInput()
 		quit = executeMenuSelection(cmd, &problems, &score)
-		totalProblems := score.wins + score.losses
-		fmt.Printf("Your Total Score: %v / %v  %f%%\n\n", score.wins, totalProblems, math.Floor((float64(score.wins)/float64(totalProblems))*100))
+		score.showScore()
+
 	}
 }
 
@@ -86,7 +125,7 @@ func getMenuInput() string {
 	return menuSelection
 }
 
-func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreKeeper) bool {
+func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreBoard) bool {
 	if cmd == "q" || cmd == "Q" {
 		return true
 	}
@@ -97,16 +136,20 @@ func executeMenuSelection(cmd string, numSets *[]problemSet, score *scoreKeeper)
 	case "1":
 		fmt.Println("Addition Time")
 		runAddition(3, *numSets, score)
+		score.showRoundScore()
+		score.resetRound()
 	case "2":
 		fmt.Println("Subtraction Time")
-		runSubtraction(3, *numSets)
+		runSubtraction(3, *numSets, score)
+		score.showRoundScore()
+		score.resetRound()
 	default:
 		fmt.Print(color.yellow, "** Invalid option **\n\n", color.standard)
 	}
 	return false
 }
 
-func runAddition(count int, numSets []problemSet, score *scoreKeeper) {
+func runAddition(count int, numSets []problemSet, score *scoreBoard) {
 	color := colors{}
 	color.setColors()
 
@@ -117,16 +160,16 @@ func runAddition(count int, numSets []problemSet, score *scoreKeeper) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
-			score.wins++
+			score.addWin()
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
-			score.losses++
+			score.addLoss()
 			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
 }
 
-func runSubtraction(count int, numSets []problemSet) {
+func runSubtraction(count int, numSets []problemSet, score *scoreBoard) {
 	color := colors{}
 	color.setColors()
 
@@ -148,8 +191,10 @@ func runSubtraction(count int, numSets []problemSet) {
 		var answer int
 		fmt.Scan(&answer)
 		if answer == correctAnswer {
+			score.addWin()
 			fmt.Print(color.white, "CORRECT\n\n", color.standard)
 		} else {
+			score.addLoss()
 			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
 		}
 	}
