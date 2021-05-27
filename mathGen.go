@@ -39,8 +39,17 @@ func (c *colors) setColors() {
 }
 
 type scoreBoard struct {
-	wins   int
-	losses int
+	wins        int
+	losses      int
+	roundWins   int
+	roundLosses int
+}
+
+func (score *scoreBoard) init() {
+	score.wins = 0
+	score.losses = 0
+	score.roundWins = 0
+	score.roundLosses = 0
 }
 
 func (score *scoreBoard) addWin() {
@@ -57,15 +66,15 @@ func (score *scoreBoard) addLoss() {
 
 func (score *scoreBoard) showScore() {
 	totalProblems := score.wins + score.losses
-	fmt.Printf("Your Total Score: %v / %v  %f%%\n\n", score.wins, totalProblems, math.Floor((float64(score.wins)/float64(totalProblems))*100))
-
+	fmt.Println("Total Wins:  ", score.wins)
+	fmt.Println("Total Losses:  ", score.losses)
+	fmt.Println("Winning %:  ", math.Floor((float64(score.wins)/float64(totalProblems))*100))
 }
 
 func main() {
 
 	score := scoreBoard{}
-	score.wins = 0
-	score.losses = 0
+	score.init()
 
 	problems := make([]problemSet, 100)
 	for i := 0; i < 10; i++ {
