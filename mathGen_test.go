@@ -33,3 +33,63 @@ func TestExecuteMenuSelection(t *testing.T) {
 		t.Errorf("executeMenuSelection('wrong') = %v; Want FALSE to continue app execution", gotQuit)
 	}
 }
+
+func TestScoreBoard(t *testing.T) {
+	testScore := scoreBoard{}
+	testScore.init()
+
+	if testScore.wins != 0 {
+		t.Errorf("initializing testScore.wins = %v; Want initial value to be 0", testScore.wins)
+	}
+	if testScore.losses != 0 {
+		t.Errorf("initializing testScore.losses = %v; Want initial value to be 0", testScore.losses)
+	}
+	if testScore.roundWins != 0 {
+		t.Errorf("initializing testScore.roundWins = %v; Want initial value to be 0", testScore.roundWins)
+	}
+	if testScore.roundLosses != 0 {
+		t.Errorf("initializing testScore.roundLosses = %v; Want initial value to be 0", testScore.roundLosses)
+	}
+
+	testScore.addWin()
+	if testScore.wins != 1 {
+		t.Errorf("initializing testScore.wins = %v; Want win value to be 1", testScore.wins)
+	}
+	if testScore.losses > 0 {
+		t.Errorf("initializing testScore.losses = %v; Want loss value to be 0", testScore.losses)
+	}
+	if testScore.roundWins != 1 {
+		t.Errorf("initializing testScore.roundWins = %v; Want win value to be 1", testScore.roundWins)
+	}
+	if testScore.roundLosses > 0 {
+		t.Errorf("initializing testScore.roundLosses = %v; Want loss value to be 0", testScore.roundLosses)
+	}
+
+	testScore.addLoss()
+	if testScore.wins > 1 {
+		t.Errorf("initializing testScore.wins = %v; Want win value to be 1", testScore.wins)
+	}
+	if testScore.losses != 1 {
+		t.Errorf("initializing testScore.losses = %v; Want loss value to be 1", testScore.losses)
+	}
+	if testScore.roundWins > 1 {
+		t.Errorf("initializing testScore.roundWins = %v; Want win value to be 1", testScore.roundWins)
+	}
+	if testScore.roundLosses != 1 {
+		t.Errorf("initializing testScore.roundLosses = %v; Want loss value to be 1", testScore.roundLosses)
+	}
+
+	testScore.resetRound()
+	if testScore.wins < 1 {
+		t.Errorf("initializing testScore.wins = %v; Want win value to be unchanged at 1", testScore.wins)
+	}
+	if testScore.losses < 1 {
+		t.Errorf("initializing testScore.losses = %v; Want loss value to be unchanged at 1", testScore.losses)
+	}
+	if testScore.roundWins > 0 {
+		t.Errorf("initializing testScore.roundWins = %v; Want win value reset to 0", testScore.roundWins)
+	}
+	if testScore.roundLosses > 0 {
+		t.Errorf("initializing testScore.roundLosses = %v; Want loss value reset to 0", testScore.roundLosses)
+	}
+}
