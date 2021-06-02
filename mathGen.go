@@ -159,13 +159,14 @@ func runAddition(count int, numSets []problemSet, score *scoreBoard) {
 		correctAnswer := numSets[problemNum].first + numSets[problemNum].second
 		var answer int
 		fmt.Scan(&answer)
-		if answer == correctAnswer {
-			score.addWin()
-			fmt.Print(color.white, "CORRECT\n\n", color.standard)
-		} else {
-			score.addLoss()
-			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
-		}
+		checkAnswer(answer, correctAnswer, score)
+		// if answer == correctAnswer {
+		// 	score.addWin()
+		// 	fmt.Print(color.white, "CORRECT\n\n", color.standard)
+		// } else {
+		// 	score.addLoss()
+		// 	fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
+		// }
 	}
 }
 
@@ -190,12 +191,19 @@ func runSubtraction(count int, numSets []problemSet, score *scoreBoard) {
 		correctAnswer := firstNum - secondNum
 		var answer int
 		fmt.Scan(&answer)
-		if answer == correctAnswer {
-			score.addWin()
-			fmt.Print(color.white, "CORRECT\n\n", color.standard)
-		} else {
-			score.addLoss()
-			fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
-		}
+		checkAnswer(answer, correctAnswer, score)
+	}
+}
+
+func checkAnswer(guess int, answer int, score *scoreBoard) {
+	color := colors{}
+	color.setColors()
+
+	if answer == guess {
+		score.addWin()
+		fmt.Print(color.white, "CORRECT\n\n", color.standard)
+	} else {
+		score.addLoss()
+		fmt.Print(color.red, "Answer is: ", guess, "\n\n", color.standard)
 	}
 }
