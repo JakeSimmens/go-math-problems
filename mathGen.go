@@ -160,13 +160,6 @@ func runAddition(count int, numSets []problemSet, score *scoreBoard) {
 		var answer int
 		fmt.Scan(&answer)
 		checkAnswer(answer, correctAnswer, score)
-		// if answer == correctAnswer {
-		// 	score.addWin()
-		// 	fmt.Print(color.white, "CORRECT\n\n", color.standard)
-		// } else {
-		// 	score.addLoss()
-		// 	fmt.Print(color.red, "Answer is: ", correctAnswer, "\n\n", color.standard)
-		// }
 	}
 }
 
